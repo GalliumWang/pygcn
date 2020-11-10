@@ -8,16 +8,10 @@ class GCN(nn.Module):
         super(GCN, self).__init__()
 
         self.gc1 = GraphConvolution(nfeat, nhid)
-        self.gc2 = GraphConvolution(nhid, nclass)       #两层图卷积
-
-
+        self.gc2 = GraphConvolution(nhid, nclass)
         self.dropout = dropout
 
     def forward(self, x, adj):
-
-
-        #adj = F.dropout(adj, 0.05, training=self.training)
-
         x = F.relu(self.gc1(x, adj))
         x = F.dropout(x, self.dropout, training=self.training)
         x = self.gc2(x, adj)
