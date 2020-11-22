@@ -24,9 +24,9 @@ class GraphConvolution(Module):
             self.register_parameter('bias', None)
 
 
-        self.reset_parameters()
+        self.reset_parameters() #初始化权重参数
 
-    def reset_parameters(self):
+    def reset_parameters(self): #类初始化时进行参数初始化
         stdv = 1. / math.sqrt(self.weight.size(1))
         self.weight.data.uniform_(-stdv, stdv)      #随机初始化的权重矩阵
 
@@ -34,9 +34,9 @@ class GraphConvolution(Module):
             self.bias.data.uniform_(-stdv, stdv)        #暂未使用
 
     def forward(self, input, adj):
-        
-        support = torch.mm(input, self.weight)
-        output = torch.spmm(adj, support)
+
+        support = torch.mm(input, self.weight)  #普通矩阵乘积
+        output = torch.spmm(adj, support)   #稀疏矩阵乘积
 
         if self.bias is not None:
             return output + self.bias
