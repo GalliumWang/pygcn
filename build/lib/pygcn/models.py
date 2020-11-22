@@ -1,27 +1,12 @@
 import torch.nn as nn
 import torch.nn.functional as F
 from pygcn.layers import GraphConvolution
-import torch
-
-
-
-# class SparseDropout(torch.nn.Module):       #对稀疏矩阵进行dropout
-#     def __init__(self, dprob=0.1):
-#         super(SparseDropout, self).__init__()
-#         # dprob is ratio of dropout
-#         # convert to keep probability
-#         self.kprob=1-dprob
-
-#     def forward(self, x):
-#         mask=((torch.rand(x._values().size())+(self.kprob)).floor()).type(torch.bool)
-#         rc=x._indices()[:,mask]
-#         val=x._values()[mask]*(1.0/self.kprob)
-#         return torch.sparse.FloatTensor(rc, val)
 
 
 class GCN(nn.Module):
     def __init__(self, nfeat, nhid, nclass, dropout):
         super(GCN, self).__init__()
+
 
         # self.gc1 = GraphConvolution(nfeat, nhid)
         # self.gc2 = GraphConvolution(nhid, nclass)       #两层图卷积
@@ -42,16 +27,16 @@ class GCN(nn.Module):
         # self.gc12 = GraphConvolution(100, 16)
         # self.gc13 = GraphConvolution(16, nclass)
 
+
         self.dropout = dropout
-        #self.edgedropout=0.1
+
 
 
 
     def forward(self, x, adj):
 
-        # sdropout=SparseDropout()
-        # adj_copy=SparseDropout(adj)
 
+        #adj = F.dropout(adj, 0.5, training=self.training)
 
         x = F.relu(self.gc1(x, adj))
         x = F.dropout(x, self.dropout, training=self.training)
@@ -77,7 +62,6 @@ class GCN(nn.Module):
         # x = F.dropout(x, self.dropout, training=self.training)
         # x = F.relu(self.gc12(x, adj))
         # x = F.dropout(x, self.dropout, training=self.training)
-
 
         x = self.gc4(x, adj)
         return F.log_softmax(x, dim=1)
