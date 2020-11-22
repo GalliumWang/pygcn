@@ -40,7 +40,7 @@ def load_data(path="../data/cora/", dataset="people"):
 
     idx_train = range(140)
     idx_val = range(200, 500)
-    idx_test = range(500, 1500)
+    idx_test = range(2657, 2707)#range(500, 1500)
 
     # idx_train = range(0,800)
     # idx_val = range(2000,2800)
