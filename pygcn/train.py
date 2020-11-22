@@ -12,6 +12,8 @@ import torch.optim as optim
 from pygcn.utils import load_data, accuracy
 from pygcn.models import GCN
 
+
+
 # Training settings
 parser = argparse.ArgumentParser()
 parser.add_argument('--no-cuda', action='store_true', default=False,
@@ -48,6 +50,12 @@ model = GCN(nfeat=features.shape[1],
             dropout=args.dropout)
 optimizer = optim.Adam(model.parameters(),
                        lr=args.lr, weight_decay=args.weight_decay)
+
+# print("test")
+# print(features.shape[1])
+# print(labels.max().item() + 1)
+
+
 
 if args.cuda:
     model.cuda()
@@ -93,6 +101,9 @@ def test():
     print("Test set results:",
           "loss= {:.4f}".format(loss_test.item()),
           "accuracy= {:.4f}".format(acc_test.item()))
+
+    # print("test")
+    # print(output.shape)
 
 
 # Train model
